@@ -16,6 +16,7 @@
   <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
   <input type="submit" value="Update!"/>
 </form>
-
+<form th:action="@{/logout}" th:method="POST">
+  <input type="submit" value="Logout">
 </body>
 </html>
