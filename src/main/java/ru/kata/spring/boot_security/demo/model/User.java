@@ -22,7 +22,10 @@ public class User {
     @Column
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    //    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(name = "security_user_roles", joinColumns = @JoinColumn(name = "security_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "security_role_id"))
     private Set<Role> roles;
 
     public void setPassword(String password) {
