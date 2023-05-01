@@ -5,8 +5,20 @@
     <title>Person</title>
 </head>
 <body>
-<p th:text="${user.getName() + ', ' + user.getAge()}">VALUE</p>
-<p th:text="${user.getId()}">VALUE</p>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Roles</th>
+    </tr>
+    <block th:object="${user}">
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.getRoles()}"></td>
+    </block>
+</table>
 
 <a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit</a>
 
