@@ -18,6 +18,7 @@ public interface UserService extends UserDetailsService {
     void delete(Long id);
 
     User findOne(Long id);
+    User findByName(String username);
 
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
