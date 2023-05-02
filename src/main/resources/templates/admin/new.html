@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>New user</title>
 </head>
-<body>
+
 
 <form th:method="POST" th:action="@{/admin}" th:object="${user}">
   <label for="name">Enter name: </label>
@@ -19,9 +19,20 @@
   <input type="text" th:field="*{password}" id="password"/>
   <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
   <br/>
+
+  <p>
+    <label>Roles:
+      <input type="checkbox" name="roles"
+             th:each="role : ${roles}"
+             th:text="${role.name}"
+             th:value="${role.id}"
+             th:field="*{roles}"/>
+    </label>
+  </p>
+
   <input type="submit" value="Create!"/>
 </form>
 <form th:action="@{/logout}" th:method="POST">
   <input type="submit" value="Logout">
-</body>
+
 </html>
