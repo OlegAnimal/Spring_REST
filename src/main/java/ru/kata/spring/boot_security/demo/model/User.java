@@ -4,7 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,41 +15,27 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(name = "name", nullable = false, unique = true)
+    @NotBlank(message = "Поле не может быть пустым")
+    @Size(min = 3, max = 30, message = "Поле должно содержать от 3 до 30 символов")
     private String name;
 
-    @Column
+    @Column(name = "age")
+    @Min(value = 0, message = "Возраст должен быть больше 0")
     private int age;
 
-    @Column
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "Поле не может быть пустым")
     private String password;
-
-    //    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
-    @ManyToMany
-    @JoinTable(name = "security_user_roles", joinColumns = @JoinColumn(name = "security_user_id"),
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "security_users_roles", joinColumns = @JoinColumn(name = "security_user_id"),
             inverseJoinColumns = @JoinColumn(name = "security_role_id"))
     private Set<Role> roles;
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public User() {
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-//    public String getPassword() {
-//        return password;
-//    }
-
-    public User(String name, String email, int age) {
+    public User(String name, int age) {
         this.name = name;
         this.age = age;
     }
@@ -60,6 +48,18 @@ public class User implements UserDetails{
     public User(String name, String password, Set<Role> roles) {
         this.name = name;
         this.password = password;
+        this.roles = roles;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
