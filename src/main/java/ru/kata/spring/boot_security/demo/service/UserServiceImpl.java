@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
+
 import java.util.*;
 
 @Service
@@ -34,10 +35,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional
     @Override
-    public void save(User user) {
-        if (userRepository.findByName(user.getName()) != null) return;
+    public boolean save(User user) throws UsernameNotFoundException {
+        if (userRepository.findByName(user.getName()) != null) {
+            return false;
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        return true;
     }
 
     @Transactional
