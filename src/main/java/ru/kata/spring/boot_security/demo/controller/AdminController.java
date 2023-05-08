@@ -11,6 +11,8 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -25,29 +27,30 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(Model model, Principal principal) {
+        model.addAttribute("admin", userService.findByName(principal.getName()));
+        model.addAttribute("user", new User());
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.findOne(id));
-        return "admin/show";
+        return "redirect:/admin";
     }
 
     @GetMapping("/new")
     public String newPerson(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getAllRoles());
-        return "admin/new";
+        return "redirect:/admin";
     }
 
-    @PostMapping()
+    @PostMapping("create")
     public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "admin/new";
 
         userService.save(user);
         return "redirect:/admin";
@@ -57,14 +60,12 @@ public class AdminController {
     public String edit(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.findOne(id));
         model.addAttribute("roles", roleService.getAllRoles());
-        return "admin/edit";
+        return "redirect:/admin";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") Long id) {
-        if (bindingResult.hasErrors())
-            return "admin/edit";
 
         userService.update((long) id, user);
         return "redirect:/admin";
