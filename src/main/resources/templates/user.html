@@ -12,19 +12,22 @@
 
     <title>User Page</title>
 </head>
+
 <body>
-<nav class="navbar navbar-dark bg-dark d-flex justify-content-between">
+<div>
+    <nav class="navbar navbar-dark bg-dark d-flex justify-content-between">
     <span>
     <span class="navbar-brand font-weight-bold" th:text="${user.name}"></span>
     <span class="navbar-brand"
           th:text="'with roles: ' + ${user.getRoles()}"></span>
     </span>
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a type="button" class="nav-link" th:href="@{/logout}">Logout</a>
-        </li>
-    </ul>
-</nav>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a type="button" class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 <!--боковая панель-->
 
 <div class="container-fluid">
@@ -53,13 +56,7 @@
                     <th scope="col">Role</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td th:text="${user.id}">ID</td>
-                    <td th:text="${user.name}">NAME</td>
-                    <td th:text="${user.age}">AGE</td>
-                    <td th:text="${user.getRoles()}">ROLE</td>
-                </tr>
+                <tbody id="userPanelBody">
                 </tbody>
             </table>
         </div>
@@ -76,5 +73,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="userView.js"></script>
 </body>
 </html>

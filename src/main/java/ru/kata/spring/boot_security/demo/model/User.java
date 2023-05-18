@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "security_users")
-public class User implements UserDetails{
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,10 +30,12 @@ public class User implements UserDetails{
     @Column(name = "password", nullable = false)
     @NotBlank(message = "Поле не может быть пустым")
     private String password;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "security_users_roles", joinColumns = @JoinColumn(name = "security_user_id"),
             inverseJoinColumns = @JoinColumn(name = "security_role_id"))
-    private Set<Role> roles;
+    @Fetch(FetchMode.JOIN)
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
