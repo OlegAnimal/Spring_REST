@@ -43,14 +43,6 @@ public class AdminRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-
-    @GetMapping("/new")
-    public String newPerson(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "redirect:/admin";
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> create(@RequestBody @Valid User user,
                                        BindingResult bindingResult) {
@@ -59,13 +51,6 @@ public class AdminRestController {
         }
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userService.findOne(id));
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "redirect:/admin";
     }
 
     @PatchMapping("/{id}")
